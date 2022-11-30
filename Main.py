@@ -1,6 +1,15 @@
+import numpy as np
+import matplotlib.pyplot as plt
 import math
 
-x = 10
+xrange = np.arange(-10,11, 0.1)
+y = []
 f = input('formel:')
 print('hello world')
-print(eval(f))
+for x in xrange: 
+#    tup = (x,eval(f))
+    y.append(eval(f))
+    
+print(y)
+plt.plot(xrange,y)
+plt.show()
