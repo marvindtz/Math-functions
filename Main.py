@@ -4,8 +4,8 @@ import math
 
 xrange = np.arange(-10,11, 0.1)
 y = []
-f = input('formel:')
-print('hello world')
+f = input('Formel:')
+#print('hello world')
 for x in xrange: 
 #    tup = (x,eval(f))
     y.append(eval(f))
