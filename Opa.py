@@ -2,12 +2,19 @@ import turtle
 import math
 import time
 import random
+import sys
 
 class Rtest:
     t = turtle.Pen()
     t.speed(0)
     turtle.bgcolor("black") 
     t.pencolor("red")
+    t.up()
+    t.setpos(-120,0)
+    t.down()
+    t.write("Zum Beenden Q drücken \nNach jedem Sprung Leertaste drücken", font=("Arial", 12, "normal"))
+    screen = turtle.Screen()
+    screen.setup(width=1.0, height=1.0)
     #Ergebnis
     start = 0
     sprung = 0
@@ -33,6 +40,8 @@ class Rtest:
         self.t.up() # nicht malen
     
     def kreise(self,radius):
+        turtle.onkey(self.quit, 'q')
+        turtle.listen()
         self.t.up()
         self.t.setpos(0,radius)
         self.t.down()
@@ -70,11 +79,12 @@ class Rtest:
             self.t.circle(10)
 
     def runtest(self,radius):
-        turtle.onkey(self.getroffen, 'w')
+        turtle.onkey(self.getroffen, 'space')
         turtle.listen()
-        for i in range(0, 360, 10):
+        for i in range(0, 180, 10):
             number = random.randint(0,11)
-            if number != 10:
+            vergangen = time.time_ns()-self.start / 1000 /1000
+            if number != 10 or vergangen <3000:
                 self.punkt(i,radius,True)
                 time.sleep(0.5)
                 self.punkt(i,radius,False)
@@ -96,15 +106,32 @@ class Rtest:
             print(f"fehler:{self.fehler}")
 
     def ergebnis(self):
+        self.t.up()
+        self.t.setpos(-120,-50)
+        self.t.down()
         print(f"Ergebnis:{self.sprung},{self.treffer},{self.fehler}")
-        print(f"Durchschnitt:{self.durchschnitt / self.treffer}")
+        self.t.write(f"Ergebnis: Sprünge:{self.sprung}, Treffer:{self.treffer}, Fehler:{self.fehler + (self.sprung - self.treffer)}", font=("Arial", 14, "normal"))
+        if self.treffer != 0:
+            print(f"Durchschnitt:{self.durchschnitt / self.treffer}")        
+            self.t.up()
+            self.t.setpos(-120,-100)
+            self.t.down()
+            self.t.write(f"Durchschnitts Reaktionszeit: {int(self.durchschnitt / self.treffer)}ms", font=("Arial", 14, "normal"))
+
+    def quit(self):
+        print("Tschüss")
+        turtle.bye()
+        sys.exit()
+
 def main():
     rt = Rtest()
     #rt.paintKreisBogen(400)
     rt.kreise(400)
     rt.runtest(400)
     rt.ergebnis()
-    input("Press key to exit")
+    Q = input("Press key to exit")
+    if Q == "r":
+        rt.runtest(400)
 
 
 if __name__ == "__main__":
